@@ -24,19 +24,8 @@ public class CachedOrderEngine : OrderEngineBase
         _cachedChildElementsByParent = null;
     }
 
-    protected override Dictionary<string, ItemEntry> GetOrCreateTargetLookup()
-    {
-        return _cachedTargetLookup ??= CreateTargetLookup();
-    }
-
-    protected override Dictionary<string, List<GroupEntry>> GetOrCreateChildGroupsByParent()
-    {
-        return _cachedChildGroupsByParent ??= CreateChildGroupsByParent();
-    }
-
-    protected override Dictionary<string, List<ElementEntry>> GetOrCreateChildElementsByParent()
-    {
-        return _cachedChildElementsByParent ??= CreateChildElementsByParent();
-    }
+    protected override Dictionary<string, ItemEntry> GetOrCreateTargetLookup() => _cachedTargetLookup ??= CreateTargetLookup();
+    protected override Dictionary<string, List<GroupEntry>> GetOrCreateChildGroupsByParent() => _cachedChildGroupsByParent ??= CreateChildGroupsByParent();
+    protected override Dictionary<string, List<ElementEntry>> GetOrCreateChildElementsByParent() => _cachedChildElementsByParent ??= CreateChildElementsByParent();
 }
 

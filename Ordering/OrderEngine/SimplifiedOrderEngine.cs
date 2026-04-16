@@ -10,16 +10,7 @@
 /// </summary>
 public class SimplifiedOrderEngine : OrderEngineBase
 {
-    protected override Dictionary<string, ItemEntry> GetOrCreateTargetLookup()
-    {
-        return CreateTargetLookup();
-    }
-    protected override Dictionary<string, List<GroupEntry>> GetOrCreateChildGroupsByParent()
-    {
-        return CreateChildGroupsByParent();
-    }
-    protected override Dictionary<string, List<ElementEntry>> GetOrCreateChildElementsByParent()
-    {
-        return CreateChildElementsByParent();
-    }
+    protected override Dictionary<string, ItemEntry> GetOrCreateTargetLookup() => CreateTargetLookup();
+    protected override Dictionary<string, List<GroupEntry>> GetOrCreateChildGroupsByParent() => CreateChildGroupsByParent();
+    protected override Dictionary<string, List<ElementEntry>> GetOrCreateChildElementsByParent() => CreateChildElementsByParent();
 }

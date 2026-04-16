@@ -198,6 +198,16 @@ public abstract class OrderEngineBase : IOrderEngine
         }
 
         return result;
+        
+        
+        (int Key, bool NotByIndex, int Insertion) GetNodePriority(int nodeId, Dictionary<int, int>? byIndexOverride)
+        {
+            int insertion = Nodes[nodeId].InsertionOrder;
+            if (byIndexOverride?.TryGetValue(nodeId, out int byIndex) ?? false)
+                return (byIndex, false, insertion);
+            else
+                return (insertion, true, insertion);
+        }
     }
 
     /// <summary>
@@ -247,26 +257,17 @@ public abstract class OrderEngineBase : IOrderEngine
             default:
                 throw new Exception($"Unsupported order rule: {orderRule.GetType().Name}");
         }
-    }
+        
+        ItemEntry ResolveTarget(string name, Dictionary<string, ItemEntry> targetLookup)
+        {
+            if (targetLookup.TryGetValue(name, out ItemEntry? target))
+                return target;
 
-    private (int Key, bool NotByIndex, int Insertion) GetNodePriority(int nodeId, Dictionary<int, int>? byIndexOverride)
-    {
-        int insertion = Nodes[nodeId].InsertionOrder;
-        if (byIndexOverride?.TryGetValue(nodeId, out int byIndex) ?? false)
-            return (byIndex, false, insertion);
-        else
-            return (insertion, true, insertion);
-    }
+            if (HasAmbiguousTarget(name))
+                throw new Exception($"Ambiguous ordering target '{name}'.");
 
-    private ItemEntry ResolveTarget(string name, Dictionary<string, ItemEntry> targetLookup)
-    {
-        if (targetLookup.TryGetValue(name, out ItemEntry? target))
-            return target;
-
-        if (HasAmbiguousTarget(name))
-            throw new Exception($"Ambiguous ordering target '{name}'.");
-
-        throw new Exception($"Unknown ordering target '{name}'.");
+            throw new Exception($"Unknown ordering target '{name}'.");
+        }
     }
 
     protected Dictionary<string, ItemEntry> CreateTargetLookup()
