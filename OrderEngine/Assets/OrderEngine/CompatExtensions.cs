@@ -1,5 +1,5 @@
-﻿// Extension methods and types for netstandard2.0 compatibility
-#if NETSTANDARD2_0
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 namespace System
 {
@@ -58,5 +58,3 @@ namespace Ordering
         public int Count => _list.Count;
     }
 }
-#endif
-

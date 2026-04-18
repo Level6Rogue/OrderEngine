@@ -1,9 +1,11 @@
 ﻿// Polyfills for netstandard2.0 compatibility
-#if NETSTANDARD2_0
 namespace System.Runtime.CompilerServices
 {
     internal static class IsExternalInit { }
 }
+
+#if NETSTANDARD2_0
+
 namespace System
 {
     internal readonly struct Index
