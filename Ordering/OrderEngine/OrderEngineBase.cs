@@ -13,7 +13,7 @@ public abstract class OrderEngineBase : IOrderEngine
 
     public void Add(Element element, OrderRule? orderRule = null)
     {
-        ArgumentNullException.ThrowIfNull(element);
+        if (element is null) throw new ArgumentNullException(nameof(element));
 
         InvalidateCaches();
 
@@ -38,7 +38,7 @@ public abstract class OrderEngineBase : IOrderEngine
 
     public void AddGroup(Group group, OrderRule? orderRule = null)
     {
-        ArgumentNullException.ThrowIfNull(group);
+        if (group is null) throw new ArgumentNullException(nameof(group));
 
         InvalidateCaches();
 
@@ -99,9 +99,9 @@ public abstract class OrderEngineBase : IOrderEngine
         // Use hook method to get lookups (cached or recomputed based on subclass)
         Dictionary<string, ItemEntry> targetLookup = GetOrCreateTargetLookup();
 
-        // Pre-size HashSet with typical edge count (most nodes have few edges)
+        // Initialize HashSets for edge tracking
         foreach (NodeEntry node in Nodes) 
-            edges[node.Id] = new HashSet<int>(capacity: 4);
+            edges[node.Id] = new HashSet<int>();
 
         void AddEdge(int from, int to)
         {
@@ -495,13 +495,13 @@ public abstract class OrderEngineBase : IOrderEngine
         if (string.IsNullOrWhiteSpace(rawName))
             throw new ArgumentException("Element name cannot be null or empty.", nameof(rawName));
 
-        string[] segments = rawName.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        string[] segments = rawName.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
         if (segments.Length == 0)
             throw new ArgumentException("Element name cannot be empty.", nameof(rawName));
 
-        fullPath = string.Join('/', segments);
-        leafName = segments[^1];
-        parentGroupPath = segments.Length > 1 ? string.Join('/', segments.Take(segments.Length - 1)) : null;
+        fullPath = string.Join("/", segments);
+        leafName = segments[segments.Length - 1];
+        parentGroupPath = segments.Length > 1 ? string.Join("/", segments.Take(segments.Length - 1)) : null;
     }
 
     private static string NormalizePath(string rawName, string label)
@@ -509,11 +509,11 @@ public abstract class OrderEngineBase : IOrderEngine
         if (string.IsNullOrWhiteSpace(rawName))
             throw new ArgumentException($"{label} cannot be null or empty.", nameof(rawName));
 
-        string[] segments = rawName.Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        string[] segments = rawName.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
         if (segments.Length == 0)
             throw new ArgumentException($"{label} cannot be empty.", nameof(rawName));
 
-        return string.Join('/', segments);
+        return string.Join("/", segments);
     }
 
     protected NodeEntry CreateNode(NodeKind kind, string name)
@@ -556,4 +556,5 @@ public abstract class OrderEngineBase : IOrderEngine
         public GroupType GroupType { get; set; }
     }
 }
+
 
