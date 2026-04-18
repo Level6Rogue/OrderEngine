@@ -134,10 +134,10 @@ Choose the optimization strategy based on your usage pattern:
 
 ```csharp
 // For multiple Build() calls (with caching)
-IOrderEngine engine = OrderEngine.Create(BuildMode.MultipleBuild);
+IOrderEngine engine = OrderEngineFactory.Create(BuildMode.MultipleBuild);
 
 // For a single Build() call (minimal overhead)
-IOrderEngine engine = OrderEngine.Create(BuildMode.SingleBuild);
+IOrderEngine engine = OrderEngineFactory.Create(BuildMode.SingleBuild);
 ```
 
 | Mode | Best For | Characteristics |
