@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ordering\Ordering.csproj" />
+    <ProjectReference Include="..\OrderEngine\Assets\OrderEngine\OrderEngine.csproj" />
   </ItemGroup>
 
 </Project>

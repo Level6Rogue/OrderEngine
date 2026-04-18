@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering", "Ordering\Ordering.csproj", "{1610732C-7B1B-4515-8A66-038AFF10D233}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderEngine", "OrderEngine\Assets\OrderEngine\OrderEngine.csproj", "{1610732C-7B1B-4515-8A66-038AFF10D233}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Tests", "Ordering.Tests\Ordering.Tests.csproj", "{F6C2BB1A-F899-4210-8298-AA3D52C42811}"
 EndProject
