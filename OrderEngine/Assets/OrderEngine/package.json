@@ -1,0 +1,18 @@
+﻿{
+  "name": "com.level6rogue.orderengine",
+  "version": "1.0.0",
+  "displayName": "Order Engine",
+  "description": "A flexible library for ordering and organizing elements with support for relative positioning, groups, and hierarchical structures.",
+  "unity": "2019.4",
+  "keywords": [
+    "ordering",
+    "sorting",
+    "ui",
+    "groups",
+    "hierarchy",
+    "layout"
+  ],
+  "author": {
+    "name": "Order Engine"
+  }
+}
