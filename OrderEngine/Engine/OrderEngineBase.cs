@@ -144,11 +144,35 @@
                     AddEdge(group.StartNodeId, group.EndNodeId);
             }
 
+            // Apply explicit ordering rules FIRST so the implicit insertion-order block below
+            // can see whether an explicit constraint already orders the element before the group.
             foreach (ElementEntry element in ElementsByPath.Values) 
                 ApplyOrderRule(element, element.OrderRule, targetLookup, AddEdge, ref byIndexOverride);
 
             foreach (GroupEntry group in GroupsByPath.Values) 
                 ApplyOrderRule(group, group.OrderRule, targetLookup, AddEdge, ref byIndexOverride);
+
+            // Fix: root-level elements must not appear between a root-level group's Start/End nodes.
+            // If a root group was registered (by insertion order) before a root-level element, add
+            // an edge Group.End → Element so the element is forced to appear after the group.
+            // Skip the implicit edge when an explicit rule already places the element before the
+            // group (i.e. element → Group.Start already exists), to avoid creating a false cycle.
+            foreach (GroupEntry group in GroupsByPath.Values)
+            {
+                if (group.ParentPath is not null) continue; // only root-level groups
+
+                NodeEntry groupStartNode = Nodes[group.StartNodeId];
+
+                foreach (ElementEntry element in ElementsByPath.Values)
+                {
+                    if (element.ParentGroupPath is not null) continue; // only root-level elements
+
+                    NodeEntry elementNode = Nodes[element.NodeId];
+                    if (elementNode.InsertionOrder > groupStartNode.InsertionOrder
+                        && !edges[element.NodeId].Contains(group.StartNodeId))
+                        AddEdge(group.EndNodeId, element.NodeId);
+                }
+            }
 
             // KAHN'S ALGORITHM: Topological sort using in-degree method
             // Step 1: Find all nodes with no dependencies (in-degree == 0) - these are safe to process first
@@ -232,7 +256,7 @@
                     int to = GetTargetForBefore(target);
                     addEdge(from, to);
                     byIndexOverride ??= new Dictionary<int, int>();
-                    byIndexOverride.TryAdd(from, int.MinValue / 2);
+                    byIndexOverride.TryAdd(from, Nodes[to].InsertionOrder);
                     break;
                 }
                 case After after:
